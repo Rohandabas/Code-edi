@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Code Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material-darker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-dark text-light">
+    <div class="container">
+        <div class="text-center my-4">
+            <h1><i class="fas fa-code"></i> Code-Edi</h1>
+            <select id="theme-selector" class="form-select w-auto d-inline-block">
+                <option value="default">Default</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="solarized">Solarized</option>
+            </select>
+        </div>
+        
+
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="editor">
+                    <h2>HTML</h2>
+                    <textarea id="html-code" placeholder="Write HTML code here"></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="editor">
+                    <h2>CSS</h2>
+                    <textarea id="css-code" placeholder="Write CSS code here"></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="editor">
+                    <h2>JavaScript</h2>
+                    <textarea id="js-code" placeholder="Write JavaScript code here"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="text-center my-4">
+            <button onclick="runCode()" class="btn btn-success"><i class="fas fa-play"></i> Run Code</button>
+            <button onclick="downloadCode()" class="btn btn-primary"><i class="fas fa-download"></i> Download Code</button>
+            <input type="file" id="file-input" style="display: none;" onchange="loadFile(event)">
+            <button onclick="document.getElementById('file-input').click()" class="btn btn-secondary">
+                <i class="fas fa-upload"></i> Open File
+            </button>
+            <button onclick="playMusic()" class="btn btn-secondary">
+                <i class="fas fa-music"></i> Play Music
+            </button>
+            <button onclick="showCheatSheet()" class="btn btn-info">
+                <i class="fas fa-book"></i> Cheat Sheet
+            </button>
+            <audio id="music-player" src="music.mp3"></audio>
+            <!-- quiz -->
+            <button onclick="showQuiz()" class="btn btn-info">
+                <i class="fas fa-question"></i> Start Quiz
+            </button>
+
+
+
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button onclick="toggleNotes()" class="btn btn-primary mt-2"><i class="fas fa-edit"></i> Take Notes</button>
+                    </div>                                      
+                </div>
+                <div class="row mt-3" id="notes-section" style="display: none;">
+                    <div class="col-md-12">
+                        <div class="editor">
+                            <textarea id="notes" placeholder="Write your notes here"></textarea>
+                            <button onclick="downloadNotes()" class="btn btn-primary mt-2"><i class="fas fa-download"></i> Download Notes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- quiz -->
+            
+            <div class="modal fade" id="quizModal" tabindex="-1" aria-labelledby="quizModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content bg-dark text-light">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="quizModalLabel">Quiz</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="quiz-content"></div>
+                            <button onclick="checkAnswers()" class="btn btn-success mt-3"><i class="fas fa-check"></i> Submit Answers</button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+         
+        
+                
+
+
+        <div class="row">
+            <div class="col-md-8">
+                <iframe id="output" class="output"></iframe>
+            </div>
+            <div class="col-md-4">
+                <div id="console" class="console">
+                    <div id="console-placeholder"><h6 class="hello">Console error will appear here</h6></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    
+    
+
+    <div id="tooltip" class="tooltip" style="display: none;"></div>
+
+    <!-- Cheat Sheet Modal -->
+    <div class="modal fade" id="cheatSheetModal" tabindex="-1" aria-labelledby="cheatSheetModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cheatSheetModalLabel">Cheat Sheet</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h3>HTML</h3>
+                    <pre>&lt;!-- HTML Syntax Examples --&gt;
+                        &lt;!-- Basic Document Structure --&gt;
+                        &lt;!DOCTYPE html&gt;
+                        &lt;html lang="en"&gt;
+                        &lt;head&gt;
+                            &lt;meta charset="UTF-8"&gt;
+                            &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+                            &lt;title&gt;Document&lt;/title&gt;
+                        &lt;/head&gt;
+                        &lt;body&gt;
+                        
+                        &lt;/body&gt;
+                        &lt;/html&gt;
+                        
+                        &lt;!-- Common Tags --&gt;
+                        &lt;div&gt;...&lt;/div&gt;
+                        &lt;span&gt;...&lt;/span&gt;
+                        &lt;a href="..."&gt;Link&lt;/a&gt;
+                        &lt;img src="..." alt="..."&gt;
+                        &lt;table&gt;...&lt;/table&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;Item 1&lt;/li&gt;
+                            &lt;li&gt;Item 2&lt;/li&gt;
+                        &lt;/ul&gt;
+                        
+                        &lt;!-- Forms --&gt;
+                        &lt;form action="..." method="post"&gt;
+                            &lt;input type="text" name="name" placeholder="Enter your name"&gt;
+                            &lt;input type="submit" value="Submit"&gt;
+                        &lt;/form&gt;
+                                            </pre>
+                                            <h3>CSS</h3>
+                                            <pre>/* CSS Syntax Examples */
+                        
+                        /* Basic Syntax */
+                        selector {
+                            property: value;
+                        }
+                        
+                        /* Selectors */
+                        #id {
+                            property: value;
+                        }
+                        .class {
+                            property: value;
+                        }
+                        element {
+                            property: value;
+                        }
+                        
+                        /* Common Properties */
+                        color: red;
+                        background-color: #f0f0f0;
+                        font-size: 16px;
+                        margin: 10px;
+                        padding: 20px;
+                        border: 1px solid #000;
+                        
+                        /* Box Model */
+                        width: 100px;
+                        height: 200px;
+                        border: 1px solid #000;
+                        padding: 10px;
+                        margin: 20px;
+                        
+                        /* Positioning */
+                        position: relative;
+                        top: 10px;
+                        left: 20px;
+                        
+                        /* Flexbox */
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        
+                        /* Grid */
+                        display: grid;
+                        grid-template-columns: 1fr 2fr;
+                        grid-gap: 10px;
+                        
+                        /* Responsive Design */
+                        @media (max-width: 600px) {
+                            .class {
+                                font-size: 12px;
+                            }
+                        }
+                                            </pre>
+                                            <h3>JavaScript</h3>
+                                            <pre>// JavaScript Syntax Examples
+                        
+                        // Variables
+                        var x = 5;
+                        let y = 10;
+                        const z = 15;
+                        
+                        // Functions
+                        function myFunction(a, b) {
+                            return a + b;
+                        }
+                        
+                        // Events
+                        document.getElementById("myButton").addEventListener("click", function() {
+                            alert("Button clicked!");
+                        });
+                        
+                        // DOM Manipulation
+                        document.getElementById("myDiv").innerHTML = "Hello World";
+                        
+                        // Arrays
+                        let fruits = ["Apple", "Banana", "Cherry"];
+                        console.log(fruits[0]); // Outputs: Apple
+                        
+                        // Objects
+                        let person = {
+                            firstName: "John",
+                            lastName: "Doe",
+                            age: 25
+                        };
+                        console.log(person.firstName); // Outputs: John
+                        
+                        // Loops
+                        for (let i = 0; i < 5; i++) {
+                            console.log(i);
+                        }
+                        
+                        // Conditional Statements
+                        if (x > 10) {
+                            console.log("x is greater than 10");
+                        } else {
+                            console.log("x is not greater than 10");
+                        }
+                        
+                        // Error Handling
+                        try {
+                            nonExistentFunction();
+                        } catch (error) {
+                            console.log("An error occurred: " + error.message);
+                        }</pre>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

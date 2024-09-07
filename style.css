@@ -1,0 +1,123 @@
+/* Default Theme */
+:root {
+    --background-color: #343a40;
+    --text-color: #f8f9fa;
+}
+
+/* Light Theme */
+body.light-theme {
+    --background-color: #f8f9fa;
+    --text-color: #343a40;
+}
+
+/* Dark Theme */
+body.dark-theme {
+    --background-color: #343a40;
+    --text-color: #f8f9fa;
+}
+
+/* Solarized Theme */
+body.solarized-theme {
+    --background-color: #002b36;
+    --text-color: #839496;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.container {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+
+
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: #f5f5f5;
+}
+
+h1 {
+    color: #61dafb;
+    font-weight: bold;
+}
+
+h2 {
+    color: #61dafb;
+}
+
+.editor {
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    font-family: monospace;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+}
+
+.output-container {
+    display: flex;
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+}
+
+.output {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+}
+
+.console {
+    height: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.CodeMirror {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+}
+.hello{
+    color: #ccc;
+}
+
+
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    z-index: 1000;
+    max-width: 200px;
+    font-size: 14px;
+    line-height: 1.5;
+}
